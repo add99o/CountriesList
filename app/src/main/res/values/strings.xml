@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CountriesList</string>
+    <string name="country_name_and_region">%1$s, %2$s</string>
+</resources>

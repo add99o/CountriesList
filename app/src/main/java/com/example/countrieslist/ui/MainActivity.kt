@@ -11,8 +11,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
+            val countryFragment = CountryFragment()
+            countryFragment.retainInstance = true
             supportFragmentManager.beginTransaction()
-                .replace(R.id.country_fragment_container, CountryFragment())
+                .replace(R.id.country_fragment_container, countryFragment)
                 .commit()
         }
     }

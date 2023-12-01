@@ -8,12 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.countrieslist.databinding.CountryFragmentLayoutBinding
 import com.example.countrieslist.model.UIState
 import com.example.countrieslist.viewmodel.CountriesViewModel
 
-class CountryFragment: Fragment() {
+class CountryFragment : Fragment() {
 
     private lateinit var binding: CountryFragmentLayoutBinding
     private val viewModel: CountriesViewModel by lazy {
@@ -25,12 +24,12 @@ class CountryFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = CountryFragmentLayoutBinding.inflate(
             inflater,
             container,
-            false
+            false,
         )
         return binding.root
     }
@@ -56,10 +55,10 @@ class CountryFragment: Fragment() {
                 }
                 is UIState.Loading -> {
                     activity?.runOnUiThread {
-                        binding.progressBar.visibility = if (countries.isLoading) View.VISIBLE else View.GONE
+                        binding.progressBar.visibility =
+                            if (countries.isLoading) View.VISIBLE else View.GONE
                     }
                 }
-
             }
         }
     }

@@ -1,11 +1,10 @@
 package com.example.countrieslist.model
 
-import android.provider.Contacts.Intents.UI
 import com.example.countrieslist.model.network.Network
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class RepositoryImpl: IRepository {
+class RepositoryImpl : IRepository {
 
     override fun getAllCountries(): Flow<UIState> {
         return flow {

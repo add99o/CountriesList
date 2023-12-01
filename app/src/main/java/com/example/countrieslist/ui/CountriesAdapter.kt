@@ -1,20 +1,18 @@
 package com.example.countrieslist.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.countrieslist.model.Country
 import com.example.countrieslist.R
 import com.example.countrieslist.databinding.CountryItemBinding
+import com.example.countrieslist.model.Country
 
 class CountriesAdapter :
     ListAdapter<Country, CountriesAdapter.ViewHolder>(CountryItemCallback) {
 
-    private object CountryItemCallback: DiffUtil.ItemCallback<Country>() {
+    private object CountryItemCallback : DiffUtil.ItemCallback<Country>() {
         override fun areItemsTheSame(oldItem: Country, newItem: Country): Boolean {
             return oldItem == newItem
         }
@@ -29,8 +27,8 @@ class CountriesAdapter :
             CountryItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
@@ -43,7 +41,7 @@ class CountriesAdapter :
                 textViewName.text = context.getString(
                     R.string.country_name_and_region,
                     country.name,
-                    country.region
+                    country.region,
                 )
                 textViewCode.text = country.code
                 textViewCapital.text = country.capital

@@ -2,12 +2,7 @@ package com.example.countrieslist.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.countrieslist.R
-import com.example.countrieslist.viewmodel.CountriesViewModel
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +17,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-
-

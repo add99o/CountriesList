@@ -1,10 +1,12 @@
 package com.example.countrieslist.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +23,7 @@ class CountryFragment : Fragment() {
     private val countryAdapter: CountriesAdapter by lazy {
         CountriesAdapter()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,6 +38,11 @@ class CountryFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (!isNetworkAvailable(requireContext())) {
+            binding.progressBar.visibility = View.GONE
+            showError("Unable to connect. Please check your internet connection and try again.")
+            return
+        }
         setupObserver()
         binding.apply {
             recyclerViewCountries.layoutManager = LinearLayoutManager(context)
@@ -43,23 +51,34 @@ class CountryFragment : Fragment() {
     }
 
     private fun setupObserver() {
-        viewModel.countries.observe(viewLifecycleOwner) { countries ->
-            when (countries) {
+        viewModel.countries.observe(viewLifecycleOwner) { uiState ->
+            when (uiState) {
                 is UIState.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    countryAdapter.submitList(countries.listOfCountries)
+                    countryAdapter.submitList(uiState.listOfCountries)
                 }
                 is UIState.Failure -> {
-                    Toast.makeText(context, countries.errorMessage, Toast.LENGTH_LONG).show()
+                    val userFriendlyErrorMessage = "Something went wrong. Please try again later."
+                    showError(userFriendlyErrorMessage)
                     binding.progressBar.visibility = View.GONE
                 }
                 is UIState.Loading -> {
-                    activity?.runOnUiThread {
-                        binding.progressBar.visibility =
-                            if (countries.isLoading) View.VISIBLE else View.GONE
-                    }
+                    binding.progressBar.visibility = if (uiState.isLoading) View.VISIBLE else View.GONE
                 }
             }
         }
+    }
+
+    private fun showError(message: String) {
+        val errorMessageTextView: TextView = binding.tvErrorMessage
+        errorMessageTextView.text = message
+        errorMessageTextView.visibility = View.VISIBLE
+    }
+
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 }

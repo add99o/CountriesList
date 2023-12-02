@@ -22,11 +22,15 @@ class CountriesViewModel(application: Application) : AndroidViewModel(applicatio
 
     private fun loadServiceCountry() {
         viewModelScope.launch {
+            _countries.value = UIState.Loading(true) // Set loading state to true at the beginning
+
             try {
                 repository.getAllCountries().collect {
-                    _countries.value = it
+                    _countries.value = UIState.Loading(false) // Set loading state to false when data starts arriving
+                    _countries.value = it // Update with data (Success or Failure)
                 }
             } catch (e: Exception) {
+                _countries.value = UIState.Loading(false) // Ensure loading is set to false on exception
                 _countries.value = UIState.Failure(e.message ?: "Unknown error")
             }
         }
